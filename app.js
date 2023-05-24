@@ -7,7 +7,7 @@ app.use(express.json());
 
 app.use("/",userRouter);
 
-mongoose.connect("mongodb://localhost:27017/users")
+mongoose.connect(process.env.DBURL)
 const con = mongoose.connection;
 
 con.on('open', ()=>{

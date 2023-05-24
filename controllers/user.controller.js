@@ -2,6 +2,7 @@ const Users = require("../models/user.model")
 const bcrypt = require('bcrypt');
 const {sign} = require('jsonwebtoken');
 const express = require('express');
+require ('dotenv').config();
 const {signupSchema} = require("../middlewares/joi_validation");
 const app = express();
 
@@ -107,11 +108,12 @@ module.exports = {
             const user = await Users.findById(req.body.id);
             const result =  bcrypt.compareSync(password,user.password);
             if(result){
-                const token = sign({result:user},"qwe1234");
+                const token = sign({result:user},process.env.SECRET_KEY);
                 res.json(token);
             }else{res.status(400).json({message:"wrong credentials"});}
 
         } catch (err) {
+            console.log(err);
 
             res.status(500).json({error:"something went wrong"});
             
